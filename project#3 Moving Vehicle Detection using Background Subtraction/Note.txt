@@ -1,0 +1,1 @@
+This code work very good when process camera be stable does not move !!

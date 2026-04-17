@@ -1,0 +1,60 @@
+============================================================
+Project: Dense Optical Flow using Gunnar Farneback's Algorithm
+============================================================
+
+This script implements real-time Dense Optical Flow tracking using OpenCV. 
+It captures video from the webcam and visualizes motion in two ways: 
+using a vector field (lines) and a color-coded HSV representation.
+
+---
+
+### 1. Key Functions
+
+A. draw_flow(img, flow, step=16)
+   - Purpose: Visualizes motion vectors as a grid of lines.
+   - Mechanism: 
+     * Creates a grid of points (subsampling by the 'step' value).
+     * Extracts the motion vectors (fx, fy) from the flow matrix at those points.
+     * Draws lines from the current position back to the previous position.
+     * Uses cv2.polylines and cv2.circle to render the vectors in green.
+
+B. draw_hsv(flow)
+   - Purpose: Provides a "dense" color visualization of motion.
+   - Mechanism:
+     * Converts the Cartesian coordinates (x, y motion) into Polar coordinates (Angle and Magnitude).
+     * Angle: Mapped to the Hue (color) of the HSV color space. Different directions show as different colors.
+     * Magnitude: Mapped to Value (brightness). Faster movement appears brighter.
+     * The result is converted back to BGR for display.
+
+---
+
+### 2. Main Logic Flow
+
+1. Initialization:
+   - Starts the video capture (cv2.VideoCapture).
+   - Captures the first frame and converts it to grayscale to serve as the initial "previous frame" (prevgray).
+
+2. The Processing Loop:
+   - Captures a new frame and converts it to grayscale.
+   - Calculates the Optical Flow: 
+     Uses 'cv2.calcOpticalFlowFarneback'. This is a dense algorithm that computes 
+     the movement for every pixel.
+   - Parameters used in Farneback:
+     * pyr_scale=0.5: Classical image pyramid scale.
+     * levels=3: Number of pyramid layers.
+     * winsize=15: Averaging window size.
+     * iterations=3: Number of iterations at each pyramid level.
+     * poly_n=5, poly_sigma=1.2: Parameters for polynomial expansion.
+
+3. Performance Tracking:
+   - Uses the 'time' module to calculate the time taken for the flow calculation.
+   - Displays the Frames Per Second (FPS) on the screen using cv2.putText.
+
+4. Visualization:
+   - Window "flow": Shows the grayscale frame with green motion vectors.
+   - Window "flow HSV": Shows the rainbow-colored motion field.
+
+---
+
+### 3. Controls
+- Press 'q' to exit the loop and close all windows.

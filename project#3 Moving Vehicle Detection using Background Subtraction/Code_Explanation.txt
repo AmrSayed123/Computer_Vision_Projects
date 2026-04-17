@@ -1,0 +1,75 @@
+============================================================
+Project: Moving Vehicle Detection using Background Subtraction
+============================================================
+
+This project implements a motion-based object detection system, 
+specifically designed to identify and track moving cars in a video 
+stream. It uses the MOG2 (Mixture of Gaussians) algorithm to isolate 
+moving objects from a static background.
+
+---
+
+### 1. Background Subtraction (MOG2)
+- backgroundobject: The script uses 'cv2.createBackgroundSubtractorMOG2'.
+- Purpose: This algorithm learns what the "background" looks like 
+  over time. Anything that changes or moves significantly compared 
+  to this model is identified as "foreground."
+- Shadow Detection: Shadows are disabled (detectShadows=False) to 
+  focus purely on the solid geometry of the vehicles.
+
+---
+
+### 2. Image Pre-processing & Noise Reduction
+To ensure accurate detection, the "Foreground Mask" (fmask) undergoes 
+several cleaning steps:
+
+A. Thresholding: 
+   Converts the mask into a strict binary image (pure black and white) 
+   to remove gray artifacts and isolate high-confidence motion.
+
+B. Morphological Operations:
+   - Erosion: Shrinks the white areas. This removes small noise 
+     (like swaying leaves or sensor grain) that shouldn't be 
+     counted as a car.
+   - Dilation: Expands the remaining white areas. This helps to 
+     fill holes inside the detected car and "rebuild" its shape 
+     after erosion.
+
+---
+
+### 3. Object Localization (Contours)
+- cv2.findContours: Scans the cleaned mask for connected white pixels.
+- Area Filtering: Only contours with an area larger than 1200 pixels 
+  are processed. This prevents small moving objects (like birds or 
+  pedestrians) from being labeled as "Cars."
+- Bounding Box: Once a car is identified, cv2.boundingRect computes 
+  the (x, y, width, height) to draw a yellow rectangle and the 
+  "Car Detected" text.
+
+---
+
+### 4. Visualization Modes
+The script provides three distinct views of the process:
+1. "One" (Real Part): Uses 'cv2.bitwise_and' to show only the moving 
+   pixels in their original colors, cutting out the static background.
+2. "Two" (Mask): Shows the mathematical view (binary mask) that 
+   the computer actually "sees."
+3. "Three" (Result): The original video frame with the bounding 
+   boxes and labels overlaid.
+
+---
+
+### 5. Summary of Workflow
+1. Read video frame by frame.
+2. Calculate foreground mask (MOG2).
+3. Clean mask via threshold, erosion, and dilation.
+4. Detect contours and filter by size.
+5. Draw rectangles and text on the original frame.
+6. Display all views for analysis.
+
+---
+
+### 6. Dependencies
+- OpenCV (cv2)
+- NumPy (for array stacking)
+- A video file named "cars moving.mp4"

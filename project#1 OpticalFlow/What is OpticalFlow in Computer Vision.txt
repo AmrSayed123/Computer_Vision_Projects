@@ -1,0 +1,58 @@
+Optical Flow is one of the most powerful concepts in classical computer vision. At its core, it is the pattern of **apparent motion** of objects, surfaces, and edges in a visual scene caused by the relative motion between an observer and the scene.
+
+### **What is Optical Flow?**
+
+When you watch a video, you are seeing a sequence of still frames. If an object moves from point $(x, y)$ in Frame 1 to point $(x + \Delta x, y + \Delta y)$ in Frame 2, Optical Flow is the vector $(\Delta x, \Delta y)$ that describes that movement.
+
+It operates on two key assumptions:
+1.  **Brightness Constancy:** The intensity (brightness) of a pixel does not change significantly between consecutive frames.
+2.  **Spatial Coherence:** Neighboring pixels usually belong to the same object and move in a similar way.
+
+
+
+---
+
+### **Why is it Important?**
+
+Optical flow is vital because it converts a series of static images into **dynamic information**. It allows a system to understand:
+* **Direction:** Where is an object moving?
+* **Velocity:** How fast is it going?
+* **Structure:** By observing how different parts of a scene move relative to each other, a computer can infer the 3D structure of the environment (Structure from Motion).
+
+---
+
+### **Types of Optical Flow**
+
+1.  **Sparse Optical Flow:** Tracks the motion of only a few specific features in the image (like corners or edges). The **Lucas-Kanade** method is the most famous example.
+2.  **Dense Optical Flow:** Calculates the motion vector for *every single pixel* in the frame, providing a complete "flow field." The **Farneback** method (which you used in your code) is a classic example of this.
+
+[Image comparing sparse vs dense optical flow]
+
+---
+
+### **Key Applications**
+
+* **Object Tracking:** Keeping a "lock" on a moving car or person across multiple frames.
+* **Video Stabilization:** Detecting unwanted camera shake and shifting the frames in the opposite direction to smooth the video.
+* **Action Recognition:** Analyzing the "flow" of a person's limbs to identify if they are running, walking, or falling.
+* **Autonomous Navigation:** Drones and robots use optical flow to detect obstacles and estimate their own velocity relative to the ground (especially in GPS-denied environments like indoor warehouses).
+* **Motion Segmentation:** Separating a moving foreground object from a static background.
+
+---
+
+### **Mathematical Foundation**
+
+The fundamental Optical Flow equation is derived using a Taylor series expansion of the brightness constancy assumption:
+
+$$I(x,y,t) = I(x+dx, y+dy, t+dt)$$
+
+This leads to the gradient constraint equation:
+
+$$f_x u + f_y v + f_t = 0$$
+
+Where:
+* $f_x, f_y$ are the image gradients (change in brightness horizontally and vertically).
+* $f_t$ is the gradient over time (change between frames).
+* $u, v$ are the horizontal and vertical components of the optical flow we want to find.
+
+Since we have two unknowns ($u$ and $v$) but only one equation, researchers developed methods like **Farneback** or **Lucas-Kanade** to add more constraints and solve for the motion.
