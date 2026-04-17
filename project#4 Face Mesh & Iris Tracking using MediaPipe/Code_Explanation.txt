@@ -1,0 +1,24 @@
+============================================================
+Project: Face Mesh & Iris Tracking using MediaPipe
+============================================================
+
+This script utilizes Google's MediaPipe Face Mesh solution to perform high-fidelity tracking of facial landmarks and iris position in real-time.
+
+---
+
+### 1. Core Logic
+The application processes a live video stream to map 468+ facial landmarks. By enabling 'refine_landmarks', the model provides additional specialized points for the iris and lips, allowing for detailed gaze tracking or biometric analysis.
+
+---
+
+### 2. Key Components
+- MediaPipe Face Mesh: The engine that detects facial geometry.
+- Refine Landmarks: A specific configuration that enables iris tracking, which is more precise than standard face detection.
+- Drawing Utils: Used to overlay the detected mesh points onto the video feed.
+
+---
+
+### 3. How to Run
+1. Install dependencies: `pip install opencv-python mediapipe`
+2. Execute the script.
+3. Press 'q' to exit the application.
