@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import time
 import math
-import matplotlib.pyplot as plt
+
 path="cars moving.mp4"
 cap=cv2.VideoCapture(path)
 
