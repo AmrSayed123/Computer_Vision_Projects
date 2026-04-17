@@ -1,0 +1,68 @@
+============================================================
+Project: Optimized Real-Time People Counting with YOLOv8
+============================================================
+
+This application utilizes the YOLOv8 (You Only Look Once) deep learning 
+framework to detect and count people in a live video stream. It is 
+optimized for speed and accuracy by leveraging specialized model 
+filtering.
+
+---
+
+### 1. Model Selection & Initialization
+- YOLOv8 Nano (yolov8n.pt): The script uses the "Nano" version of 
+  YOLOv8, which is the smallest and fastest model in the family. 
+  This makes it ideal for real-time applications on standard 
+  webcams or low-power devices.
+
+---
+
+### 2. High-Efficiency Detection Logic
+Unlike basic detection scripts, this version optimizes performance 
+at the source:
+- Class Filtering (classes=[0]): The model is instructed to only 
+  detect "Person" (COCO class 0). This prevents the computer from 
+  wasting resources trying to identify chairs, tables, or other 
+  background objects.
+- Confidence Threshold (conf=0.5): A 50% threshold is applied to 
+  ensure that only clear detections are counted, reducing "ghost" 
+  detections or false positives.
+
+---
+
+### 3. Feature Extraction & Visualization
+For every frame processed, the following happens:
+- Bounding Box Extraction: The script retrieves the (x1, y1, x2, y2) 
+  pixel coordinates from the model's output.
+- Automated Counting: Instead of a manual loop counter, the code 
+  uses the length of the detections list ('len(detections)'), 
+  which is faster and more reliable.
+- UI Overlays: 
+    - A green rectangle highlights each detected person.
+    - A specialized "Status Bar" (black background rectangle) is 
+      drawn at the top-left to ensure the "People Count" text is 
+      readable regardless of lighting or background colors.
+
+---
+
+### 4. Hardware Management
+- OpenCV VideoCapture: Handles the handshake with the system camera.
+- Resource Release: The 'finally' block ensures that even if the 
+  code crashes, the webcam is properly released and the GUI 
+  windows are closed, preventing system memory leaks.
+
+---
+
+### 5. Workflow Summary
+1. Load the pre-trained neural network.
+2. Capture a frame from the webcam.
+3. Run the optimized person-only detection.
+4. Calculate total count based on active bounding boxes.
+5. Draw visuals (Boxes + Labels + Counter).
+6. Repeat until the 'q' key is pressed.
+
+---
+
+### 6. Dependencies
+- ultralytics (The YOLOv8 framework)
+- opencv-python (For camera and GUI management)

@@ -1,0 +1,54 @@
+============================================================
+Project: Real-Time Human Pose Estimation & Landmark Mapping
+============================================================
+
+This application utilizes Google's MediaPipe Pose pipeline to detect and 
+track 33 different skeletal landmarks on the human body in real-time. 
+The system identifies key points such as shoulders, elbows, knees, 
+and ankles to create a live digital skeleton.
+
+---
+
+### 1. MediaPipe Pose Engine
+- model_complexity=1: Balanced setting for real-time tracking on 
+  standard hardware.
+- static_image_mode=False: Optimized for video streams, where the 
+  model uses the landmark positions from the previous frame to 
+  speed up detection in the current frame.
+- min_detection_confidence: Set to 0.5 to ensure that the initial 
+  body detection is reliable before drawing landmarks.
+
+---
+
+### 2. Core Image Processing
+- cv2.flip(frame, 1): Flips the image horizontally to create a 
+  "Mirror Effect," making it more intuitive for the user to 
+  interact with the camera.
+- BGR to RGB Conversion: Since OpenCV reads images in BGR but 
+  MediaPipe's neural networks are trained on RGB, the frame is 
+  converted to ensure accurate detection.
+
+---
+
+### 3. Skeletal Visualization
+- mp_drawing.draw_landmarks: This function overlays the digital 
+  skeleton on the raw video.
+- Landmarks: Represented as Green circles (0, 255, 0).
+- Connections: The lines representing the skeletal structure are 
+  drawn in Red (255, 0, 0).
+
+---
+
+### 4. Workflow Summary
+1. Initialize the Pose model and open the webcam.
+2. Read and flip the frame for a mirror view.
+3. Pass the RGB image to the AI model.
+4. Extract 33 landmark coordinates (X, Y, Z, Visibility).
+5. Draw the landmarks and skeletal connections on the screen.
+6. Display the result in a live window.
+
+---
+
+### 5. Hardware & Exit
+- The webcam is automatically released when the loop finishes.
+- The user can exit the program at any time by pressing 'q'.
